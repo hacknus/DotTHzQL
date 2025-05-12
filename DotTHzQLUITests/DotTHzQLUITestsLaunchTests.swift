@@ -1,13 +1,13 @@
 //
-//  HDF5QLUITestsLaunchTests.swift
-//  HDF5QLUITests
+//  DotTHzQLUITestsLaunchTests.swift
+//  DotTHzQLUITests
 //
 //  Created by Linus Stöckli on 19.02.2025.
 //
 
 import XCTest
 
-final class HDF5QLUITestsLaunchTests: XCTestCase {
+final class DotTHzQLUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		15A217462D67D3FB00F5444D /* libhdf5.310.5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 15C0E1E92D6603D900308333 /* libhdf5.310.5.1.dylib */; };
 		15C0E1D42D6602FE00308333 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15C0E1D32D6602FE00308333 /* Quartz.framework */; };
-		15C0E1E12D6602FE00308333 /* HDF5QLExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 15C0E1D12D6602FE00308333 /* HDF5QLExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		15C0E1E12D6602FE00308333 /* DotTHzQLExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 15C0E1D12D6602FE00308333 /* DotTHzQLExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		15C0E1E82D66037700308333 /* HDF5Kit in Frameworks */ = {isa = PBXBuildFile; productRef = 15C0E1E72D66037700308333 /* HDF5Kit */; };
 		15C0E1EE2D66050C00308333 /* HDF5Kit in Frameworks */ = {isa = PBXBuildFile; productRef = 15C0E1ED2D66050C00308333 /* HDF5Kit */; };
 /* End PBXBuildFile section */
@@ -45,7 +45,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				15C0E1E12D6602FE00308333 /* HDF5QLExtension.appex in Embed Foundation Extensions */,
+				15C0E1E12D6602FE00308333 /* DotTHzQLExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,46 +53,33 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		15C0E19E2D6602B400308333 /* HDF5QL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HDF5QL.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		15C0E1AF2D6602B600308333 /* HDF5QLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HDF5QLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		15C0E1B92D6602B600308333 /* HDF5QLUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HDF5QLUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		15C0E1D12D6602FE00308333 /* HDF5QLExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HDF5QLExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		15C0E19E2D6602B400308333 /* DotTHzQL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DotTHzQL.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		15C0E1AF2D6602B600308333 /* DotTHzQLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotTHzQLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		15C0E1B92D6602B600308333 /* DotTHzQLUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotTHzQLUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		15C0E1D12D6602FE00308333 /* DotTHzQLExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DotTHzQLExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		15C0E1D32D6602FE00308333 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		15C0E1E92D6603D900308333 /* libhdf5.310.5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libhdf5.310.5.1.dylib; path = ../../../../opt/homebrew/Cellar/hdf5/1.14.6/lib/libhdf5.310.5.1.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		15C0E1E22D6602FE00308333 /* Exceptions for "HDF5QLExtension" folder in "HDF5QLExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 15C0E1D02D6602FE00308333 /* HDF5QLExtension */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		15C0E1A02D6602B400308333 /* HDF5QL */ = {
+		15C0E1A02D6602B400308333 /* DotTHzQL */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = HDF5QL;
+			path = DotTHzQL;
 			sourceTree = "<group>";
 		};
-		15C0E1B22D6602B600308333 /* HDF5QLTests */ = {
+		15C0E1B22D6602B600308333 /* DotTHzQLTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = HDF5QLTests;
+			path = DotTHzQLTests;
 			sourceTree = "<group>";
 		};
-		15C0E1BC2D6602B600308333 /* HDF5QLUITests */ = {
+		15C0E1BC2D6602B600308333 /* DotTHzQLUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = HDF5QLUITests;
+			path = DotTHzQLUITests;
 			sourceTree = "<group>";
 		};
-		15C0E1D52D6602FE00308333 /* HDF5QLExtension */ = {
+		15C0E1D52D6602FE00308333 /* DotTHzQLExtension */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				15C0E1E22D6602FE00308333 /* Exceptions for "HDF5QLExtension" folder in "HDF5QLExtension" target */,
-			);
-			path = HDF5QLExtension;
+			path = DotTHzQLExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -136,10 +123,10 @@
 		15C0E1952D6602B400308333 = {
 			isa = PBXGroup;
 			children = (
-				15C0E1A02D6602B400308333 /* HDF5QL */,
-				15C0E1B22D6602B600308333 /* HDF5QLTests */,
-				15C0E1BC2D6602B600308333 /* HDF5QLUITests */,
-				15C0E1D52D6602FE00308333 /* HDF5QLExtension */,
+				15C0E1A02D6602B400308333 /* DotTHzQL */,
+				15C0E1B22D6602B600308333 /* DotTHzQLTests */,
+				15C0E1BC2D6602B600308333 /* DotTHzQLUITests */,
+				15C0E1D52D6602FE00308333 /* DotTHzQLExtension */,
 				15C0E1D22D6602FE00308333 /* Frameworks */,
 				15C0E19F2D6602B400308333 /* Products */,
 			);
@@ -148,10 +135,10 @@
 		15C0E19F2D6602B400308333 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				15C0E19E2D6602B400308333 /* HDF5QL.app */,
-				15C0E1AF2D6602B600308333 /* HDF5QLTests.xctest */,
-				15C0E1B92D6602B600308333 /* HDF5QLUITests.xctest */,
-				15C0E1D12D6602FE00308333 /* HDF5QLExtension.appex */,
+				15C0E19E2D6602B400308333 /* DotTHzQL.app */,
+				15C0E1AF2D6602B600308333 /* DotTHzQLTests.xctest */,
+				15C0E1B92D6602B600308333 /* DotTHzQLUITests.xctest */,
+				15C0E1D12D6602FE00308333 /* DotTHzQLExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -168,9 +155,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		15C0E19D2D6602B400308333 /* HDF5QL */ = {
+		15C0E19D2D6602B400308333 /* DotTHzQL */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 15C0E1C32D6602B600308333 /* Build configuration list for PBXNativeTarget "HDF5QL" */;
+			buildConfigurationList = 15C0E1C32D6602B600308333 /* Build configuration list for PBXNativeTarget "DotTHzQL" */;
 			buildPhases = (
 				15C0E19A2D6602B400308333 /* Sources */,
 				15C0E19B2D6602B400308333 /* Frameworks */,
@@ -183,19 +170,19 @@
 				15C0E1E02D6602FE00308333 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				15C0E1A02D6602B400308333 /* HDF5QL */,
+				15C0E1A02D6602B400308333 /* DotTHzQL */,
 			);
-			name = HDF5QL;
+			name = DotTHzQL;
 			packageProductDependencies = (
 				15C0E1E72D66037700308333 /* HDF5Kit */,
 			);
 			productName = HDF5QL;
-			productReference = 15C0E19E2D6602B400308333 /* HDF5QL.app */;
+			productReference = 15C0E19E2D6602B400308333 /* DotTHzQL.app */;
 			productType = "com.apple.product-type.application";
 		};
-		15C0E1AE2D6602B600308333 /* HDF5QLTests */ = {
+		15C0E1AE2D6602B600308333 /* DotTHzQLTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 15C0E1C62D6602B600308333 /* Build configuration list for PBXNativeTarget "HDF5QLTests" */;
+			buildConfigurationList = 15C0E1C62D6602B600308333 /* Build configuration list for PBXNativeTarget "DotTHzQLTests" */;
 			buildPhases = (
 				15C0E1AB2D6602B600308333 /* Sources */,
 				15C0E1AC2D6602B600308333 /* Frameworks */,
@@ -207,18 +194,18 @@
 				15C0E1B12D6602B600308333 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				15C0E1B22D6602B600308333 /* HDF5QLTests */,
+				15C0E1B22D6602B600308333 /* DotTHzQLTests */,
 			);
-			name = HDF5QLTests;
+			name = DotTHzQLTests;
 			packageProductDependencies = (
 			);
 			productName = HDF5QLTests;
-			productReference = 15C0E1AF2D6602B600308333 /* HDF5QLTests.xctest */;
+			productReference = 15C0E1AF2D6602B600308333 /* DotTHzQLTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		15C0E1B82D6602B600308333 /* HDF5QLUITests */ = {
+		15C0E1B82D6602B600308333 /* DotTHzQLUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 15C0E1C92D6602B600308333 /* Build configuration list for PBXNativeTarget "HDF5QLUITests" */;
+			buildConfigurationList = 15C0E1C92D6602B600308333 /* Build configuration list for PBXNativeTarget "DotTHzQLUITests" */;
 			buildPhases = (
 				15C0E1B52D6602B600308333 /* Sources */,
 				15C0E1B62D6602B600308333 /* Frameworks */,
@@ -230,18 +217,18 @@
 				15C0E1BB2D6602B600308333 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				15C0E1BC2D6602B600308333 /* HDF5QLUITests */,
+				15C0E1BC2D6602B600308333 /* DotTHzQLUITests */,
 			);
-			name = HDF5QLUITests;
+			name = DotTHzQLUITests;
 			packageProductDependencies = (
 			);
 			productName = HDF5QLUITests;
-			productReference = 15C0E1B92D6602B600308333 /* HDF5QLUITests.xctest */;
+			productReference = 15C0E1B92D6602B600308333 /* DotTHzQLUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		15C0E1D02D6602FE00308333 /* HDF5QLExtension */ = {
+		15C0E1D02D6602FE00308333 /* DotTHzQLExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 15C0E1E32D6602FE00308333 /* Build configuration list for PBXNativeTarget "HDF5QLExtension" */;
+			buildConfigurationList = 15C0E1E32D6602FE00308333 /* Build configuration list for PBXNativeTarget "DotTHzQLExtension" */;
 			buildPhases = (
 				15C0E1CD2D6602FE00308333 /* Sources */,
 				15C0E1CE2D6602FE00308333 /* Frameworks */,
@@ -252,14 +239,14 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				15C0E1D52D6602FE00308333 /* HDF5QLExtension */,
+				15C0E1D52D6602FE00308333 /* DotTHzQLExtension */,
 			);
-			name = HDF5QLExtension;
+			name = DotTHzQLExtension;
 			packageProductDependencies = (
 				15C0E1ED2D66050C00308333 /* HDF5Kit */,
 			);
 			productName = HDF5QLExtension;
-			productReference = 15C0E1D12D6602FE00308333 /* HDF5QLExtension.appex */;
+			productReference = 15C0E1D12D6602FE00308333 /* DotTHzQLExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -288,7 +275,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 15C0E1992D6602B400308333 /* Build configuration list for PBXProject "HDF5QL" */;
+			buildConfigurationList = 15C0E1992D6602B400308333 /* Build configuration list for PBXProject "DotTHzQL" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -305,10 +292,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				15C0E19D2D6602B400308333 /* HDF5QL */,
-				15C0E1AE2D6602B600308333 /* HDF5QLTests */,
-				15C0E1B82D6602B600308333 /* HDF5QLUITests */,
-				15C0E1D02D6602FE00308333 /* HDF5QLExtension */,
+				15C0E19D2D6602B400308333 /* DotTHzQL */,
+				15C0E1AE2D6602B600308333 /* DotTHzQLTests */,
+				15C0E1B82D6602B600308333 /* DotTHzQLUITests */,
+				15C0E1D02D6602FE00308333 /* DotTHzQLExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -378,17 +365,17 @@
 /* Begin PBXTargetDependency section */
 		15C0E1B12D6602B600308333 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 15C0E19D2D6602B400308333 /* HDF5QL */;
+			target = 15C0E19D2D6602B400308333 /* DotTHzQL */;
 			targetProxy = 15C0E1B02D6602B600308333 /* PBXContainerItemProxy */;
 		};
 		15C0E1BB2D6602B600308333 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 15C0E19D2D6602B400308333 /* HDF5QL */;
+			target = 15C0E19D2D6602B400308333 /* DotTHzQL */;
 			targetProxy = 15C0E1BA2D6602B600308333 /* PBXContainerItemProxy */;
 		};
 		15C0E1E02D6602FE00308333 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 15C0E1D02D6602FE00308333 /* HDF5QLExtension */;
+			target = 15C0E1D02D6602FE00308333 /* DotTHzQLExtension */;
 			targetProxy = 15C0E1DF2D6602FE00308333 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -517,15 +504,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = HDF5QL/HDF5QL.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DotTHzQL/DotTHzQL.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"HDF5QL/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"DotTHzQL/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = /opt/homebrew/include;
-				INFOPLIST_FILE = HDF5QL/Info.plist;
+				INFOPLIST_FILE = DotTHzQL/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -537,7 +524,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-lhdf5";
-				PRODUCT_BUNDLE_IDENTIFIER = ch.unibe.HDF5QL;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.unibe.DotTHzQL;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -549,15 +536,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = HDF5QL/HDF5QL.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DotTHzQL/DotTHzQL.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"HDF5QL/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"DotTHzQL/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = /opt/homebrew/include;
-				INFOPLIST_FILE = HDF5QL/Info.plist;
+				INFOPLIST_FILE = DotTHzQL/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -569,7 +556,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-lhdf5";
-				PRODUCT_BUNDLE_IDENTIFIER = ch.unibe.HDF5QL;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.unibe.DotTHzQL;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -589,7 +576,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HDF5QL.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HDF5QL";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DotTHzQL.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DotTHzQL";
 			};
 			name = Debug;
 		};
@@ -606,7 +593,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HDF5QL.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HDF5QL";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DotTHzQL.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DotTHzQL";
 			};
 			name = Release;
 		};
@@ -643,13 +630,13 @@
 		15C0E1E42D6602FE00308333 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = HDF5QLExtension/HDF5QLExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DotTHzQLExtension/DotTHzQLExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = /opt/homebrew/include;
-				INFOPLIST_FILE = HDF5QLExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = HDF5QLExtension;
+				INFOPLIST_FILE = DotTHzQLExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DotTHzQLExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -664,7 +651,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-lhdf5";
-				PRODUCT_BUNDLE_IDENTIFIER = ch.unibe.HDF5QL.HDF5QLExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.unibe.DotTHzQL.DotTHzQLExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -675,13 +662,13 @@
 		15C0E1E52D6602FE00308333 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = HDF5QLExtension/HDF5QLExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DotTHzQLExtension/DotTHzQLExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = /opt/homebrew/include;
-				INFOPLIST_FILE = HDF5QLExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = HDF5QLExtension;
+				INFOPLIST_FILE = DotTHzQLExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DotTHzQLExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -696,7 +683,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-lhdf5";
-				PRODUCT_BUNDLE_IDENTIFIER = ch.unibe.HDF5QL.HDF5QLExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.unibe.DotTHzQL.DotTHzQLExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -707,7 +694,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		15C0E1992D6602B400308333 /* Build configuration list for PBXProject "HDF5QL" */ = {
+		15C0E1992D6602B400308333 /* Build configuration list for PBXProject "DotTHzQL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				15C0E1C12D6602B600308333 /* Debug */,
@@ -716,7 +703,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		15C0E1C32D6602B600308333 /* Build configuration list for PBXNativeTarget "HDF5QL" */ = {
+		15C0E1C32D6602B600308333 /* Build configuration list for PBXNativeTarget "DotTHzQL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				15C0E1C42D6602B600308333 /* Debug */,
@@ -725,7 +712,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		15C0E1C62D6602B600308333 /* Build configuration list for PBXNativeTarget "HDF5QLTests" */ = {
+		15C0E1C62D6602B600308333 /* Build configuration list for PBXNativeTarget "DotTHzQLTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				15C0E1C72D6602B600308333 /* Debug */,
@@ -734,7 +721,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		15C0E1C92D6602B600308333 /* Build configuration list for PBXNativeTarget "HDF5QLUITests" */ = {
+		15C0E1C92D6602B600308333 /* Build configuration list for PBXNativeTarget "DotTHzQLUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				15C0E1CA2D6602B600308333 /* Debug */,
@@ -743,7 +730,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		15C0E1E32D6602FE00308333 /* Build configuration list for PBXNativeTarget "HDF5QLExtension" */ = {
+		15C0E1E32D6602FE00308333 /* Build configuration list for PBXNativeTarget "DotTHzQLExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				15C0E1E42D6602FE00308333 /* Debug */,
