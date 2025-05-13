@@ -221,7 +221,7 @@ class PreviewProvider: QLPreviewProvider, QLPreviewingController {
         var metadata = ""
         let groups = file.getGroupNames() ?? ["<no groups>"]
         for groupName in groups {
-            metadata += "📁 Group: \(groupName)\n"
+            metadata += "Group: \(groupName)\n"
             if let group = file.openGroup(groupName) {
                 metadata += "  Datasets:\n"
                 for dataset in group.objectNames() {
