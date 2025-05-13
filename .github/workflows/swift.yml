@@ -22,7 +22,7 @@ jobs:
 
     - name: Build using xcodebuild
       run: |
-        xcodebuild -project HDF5QL.xcodeproj \
-                   -scheme HDF5QL \
+        xcodebuild -project DotTHzQL.xcodeproj \
+                   -scheme DotTHzQL \
                    -configuration Release \
                    clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
