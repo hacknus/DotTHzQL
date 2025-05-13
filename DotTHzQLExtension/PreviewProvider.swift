@@ -217,41 +217,84 @@ class PreviewProvider: QLPreviewProvider, QLPreviewingController {
         guard let file = File.open(fileURL.path, mode: .readOnly) else {
             return nil
         }
-        
+
         var metadata = ""
         let groups = file.getGroupNames() ?? ["<no groups>"]
-        for groupName in groups {
-            metadata += "Group: \(groupName)\n"
-            if let group = file.openGroup(groupName) {
-                metadata += "  Datasets:\n"
-                for dataset in group.objectNames() {
-                    metadata += "    • \(dataset)\n"
-                }
 
-                metadata += "  Attributes:\n"
-                for attributeName in group.attributeNames() {
-                    if let attribute = group.openDoubleAttribute(attributeName) {
-                        do {
-                            let value = try attribute.read()
-                            metadata += "    - \(attributeName): \(value)\n"
-                        } catch {
-                            if let attribute = group.openStringAttribute(attributeName) {
-                                do {
-                                    let value = try attribute.read()
-                                    metadata += "    - \(attributeName): \(value)\n"
-                                } catch {
-                                    metadata += "    - \(attributeName): <error reading>\n"
-                                }
-                            }
-                        }
+        for groupName in groups {
+            metadata += "\(groupName):\n"
+            guard let group = file.openGroup(groupName) else {
+                metadata += "  ⚠️ Failed to open group.\n\n"
+                continue
+            }
+
+            let dsDescriptions: [String] = {
+                if let attr = group.openStringAttribute("dsDescription"),
+                   let rawList = try? attr.read(), let joined = rawList.first {
+                    return joined.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+                }
+                return []
+            }()
+
+            let mdDescriptions: [String] = {
+                if let attr = group.openStringAttribute("mdDescription"),
+                   let rawList = try? attr.read(), let joined = rawList.first {
+                    return joined.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+                }
+                return []
+            }()
+
+            // --- Datasets with descriptions by index ---
+            let datasets = group.objectNames()
+            metadata += "  Datasets:\n"
+            for datasetName in datasets {
+                var shapeDesc = ""
+                if let dataset = group.openDataset(datasetName) {
+                    let dims = dataset.space.dims.map { String($0) }.joined(separator: " x ")
+                    shapeDesc = "(\(dims))"
+                }
+                var label = datasetName
+                if datasetName.starts(with: "ds") {
+                    let suffix = datasetName.dropFirst(2) // drops "ds"
+                    if var index = Int(suffix) {
+                        index -= 1
+                        label = index < dsDescriptions.count ? dsDescriptions[index] : datasetName
                     }
                 }
-            } else {
-                metadata += "  ⚠️ Failed to open group.\n"
+                metadata += "    • \(label): \(shapeDesc)\n"
             }
+
+            // --- Metadata with descriptions by index ---
+            let attributeNames = group.attributeNames()
+                .filter { !["dsDescription", "mdDescription"].contains($0) }
+
+            if !attributeNames.isEmpty {
+                metadata += "  MetaData:\n"
+                for attrName in attributeNames {
+                    var label = attrName
+                    var valueStr = "<unreadable>"
+                    
+                    if attrName.starts(with: "md") {
+                        let suffix = attrName.dropFirst(2) // drops "md"
+                        if var index = Int(suffix) {
+                            index -= 1
+                            label = index < mdDescriptions.count ? mdDescriptions[index] : attrName
+                        }
+                    }
+
+                    if let attr = group.openDoubleAttribute(attrName), let val = try? attr.read() {
+                        valueStr = "\(val)".replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: "")
+                    } else if let attr = group.openStringAttribute(attrName), let val = try? attr.read() {
+                        valueStr = "\(val)".replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: "")
+                    }
+
+                    metadata += "    - \(label): \(valueStr)\n"
+                }
+            }
+
             metadata += "\n"
         }
-        
+
         return metadata
     }
 }
