@@ -8,15 +8,16 @@
 		<array>
 			<dict>
 				<key>CFBundleTypeName</key>
-				<string>HDF5 File</string>
+				<string>DotTHz File</string>
 				<key>CFBundleTypeExtensions</key>
 				<array>
-                    <string>h5</string>
-                    <string>hdf5</string>
+                    <string>thz</string>
+                    <string>thzimg</string>
+                    <string>thzswp</string>
 				</array>
 				<key>LSItemContentTypes</key>
 				<array>
-					<string>ch.unibe.hdf5</string>
+                    <string>ch.unibe.dotthz</string>
 				</array>
 			</dict>
 		</array>
@@ -26,22 +27,23 @@
             <array>
                 <dict>
                     <key>UTTypeIdentifier</key>
-                    <string>ch.unibe.hdf5</string>
+                    <string>ch.unibe.dotthz</string>
                     <key>UTTypeConformsTo</key>
                     <array>
                         <string>public.data</string>
                     </array>
                     <key>UTTypeDescription</key>
-                    <string>HDF5 Data File</string>
+                    <string>DotThz Data File</string>
                     <key>UTTypeTagSpecification</key>
                     <dict>
                         <key>public.filename-extension</key>
                         <array>
-                            <string>h5</string>
-                            <string>hdf5</string>
+                            <string>thz</string>
+                            <string>thzimg</string>
+                            <string>thzswp</string>
                         </array>
                         <key>public.mime-type</key>
-                        <string>application/x-hdf5</string>
+                        <string>application/x-dotthz</string>
                     </dict>
                 </dict>
             </array>
@@ -49,7 +51,7 @@
 			<true/>
 			<key>QLSupportedContentTypes</key>
 			<array>
-                <string>ch.unibe.hdf5</string>
+                <string>ch.unibe.dotthz</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<true/>

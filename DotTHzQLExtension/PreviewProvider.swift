@@ -2,6 +2,7 @@ import Cocoa
 import Quartz
 import HDF5Kit
 import UniformTypeIdentifiers
+import Accelerate
 
 class PreviewProvider: QLPreviewProvider, QLPreviewingController {
     
@@ -9,7 +10,7 @@ class PreviewProvider: QLPreviewProvider, QLPreviewingController {
         let fileURL = request.fileURL
         let metadata = extractHDF5Metadata(from: fileURL) ?? "Could not read metadata"
 
-        // Fetch file attributes
+        // File details
         let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
         let fileName = fileURL.lastPathComponent
         let fileSize = (fileAttributes[.size] as? NSNumber)?.int64Value ?? 0
@@ -27,17 +28,117 @@ class PreviewProvider: QLPreviewProvider, QLPreviewingController {
         let createdStr = fileCreationDate.map { dateFormatter.string(from: $0) } ?? "Unknown"
         let modifiedStr = fileModificationDate.map { dateFormatter.string(from: $0) } ?? "Unknown"
 
-        // Get icon
-        let icon = NSWorkspace.shared.icon(forFile: fileURL.path)
-        icon.size = NSSize(width: 256, height: 256)
-        guard let cgImage = icon.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-            throw NSError(domain: "HDF5QL", code: -1, userInfo: [NSLocalizedDescriptionKey: "Could not get icon"])
-        }
-        let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
-        guard let iconData = bitmapRep.representation(using: .png, properties: [:]) else {
-            throw NSError(domain: "HDF5QL", code: -2, userInfo: [NSLocalizedDescriptionKey: "Could not encode icon"])
-        }
-        let iconBase64 = iconData.base64EncodedString()
+        let iconBase64: String = {
+            print("🔍 Attempting to open HDF5 file at: \(fileURL.path)")
+            if let file = File.open(fileURL.path, mode: .readOnly) {
+                for groupName in file.getGroupNames() ?? [] {
+                    print("📁 Found group: \(groupName)")
+                    if let group = file.openGroup(groupName) {
+                        for datasetName in group.objectNames() {
+                            print("📦 Found dataset: \(datasetName)")
+                            if let dataset = group.openDataset(datasetName) {
+                                let dims = dataset.space.dims
+                                print("📐 Dataset '\(datasetName)' has dimensionality: \(dims)")
+                                if dims.count == 3 {
+                                    do {
+                                        let dataspace = dataset.space
+                                        let dims = dataspace.dims
+                                        print("✅ Using dataset '\(datasetName)' with dims: \(dims)")
+
+                                        let elementCount = dims.reduce(1, *)
+                                        print("🔢 Total elements: \(elementCount)")
+                                        
+                                        var buffer = [Float](repeating: 0, count: Int(elementCount))
+                                        
+                                        
+                                        try dataset.read(into: &buffer, type: NativeType.float)
+                                        
+                                        let width = dims[0]
+                                        let height = dims[1]
+                                        let channels = dims[2]
+                                        
+                                        var rawPixels = [Float]()
+
+                                        // Use Accelerate for vectorized summing across channels
+                                        print("🧮 Processing image data...")
+
+                                        buffer.withUnsafeBufferPointer { bufPtr in
+                                            let input = bufPtr.baseAddress!
+                                            
+                                            for i in 0..<width {
+                                                for j in 0..<height {
+                                                    let start = (i * height * channels) + (j * channels)
+                                                    var sumSq: Float = 0
+                                                    vDSP_svesq(input.advanced(by: start), 1, &sumSq, vDSP_Length(channels))
+                                                    
+                                                    // Calculate square root of sum of squares for each pixel
+                                                    rawPixels.append(sqrt(sumSq))
+                                                }
+                                            }
+                                        }
+
+                                        // Normalize using max value and convert to UInt8 for image
+                                        let maxVal = rawPixels.max() ?? 1
+                                        var imagePixels = rawPixels.map { UInt8(min(255, ($0 / maxVal) * 255)) }
+
+                                        print("🖼️ Attempting to create CGImage...")
+                                        let colorSpace = CGColorSpaceCreateDeviceGray()
+                                        let bitsPerComponent = 8
+                                        let bytesPerRow = width
+                                        let dataProvider = CGDataProvider(data: NSData(bytes: &imagePixels, length: imagePixels.count))
+
+                                        if let cgImage = CGImage(
+                                            width: width,
+                                            height: height,
+                                            bitsPerComponent: bitsPerComponent,
+                                            bitsPerPixel: bitsPerComponent,
+                                            bytesPerRow: bytesPerRow,
+                                            space: colorSpace,
+                                            bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue),
+                                            provider: dataProvider!,
+                                            decode: nil,
+                                            shouldInterpolate: false,
+                                            intent: .defaultIntent
+                                        ) {
+                                            let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: 256, height: 256))
+                                            if let tiffData = nsImage.tiffRepresentation,
+                                               let bitmapRep = NSBitmapImageRep(data: tiffData),
+                                               let iconData = bitmapRep.representation(using: .png, properties: [:]) {
+                                                print("✅ Successfully generated image thumbnail")
+                                                return iconData.base64EncodedString()
+                                            } else {
+                                                print("⚠️ Failed to create bitmap representation")
+                                            }
+                                        } else {
+                                            print("❌ Failed to create CGImage")
+                                        }
+                                    } catch {
+                                        print("💥 Error processing dataset '\(datasetName)': \(error)")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                print("❌ Failed to open HDF5 file.")
+            }
+
+            print("📎 Falling back to default icon.")
+            let icon = NSWorkspace.shared.icon(forFile: fileURL.path)
+            icon.size = NSSize(width: 256, height: 256)
+            guard let cgImage = icon.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+                print("❌ Failed to get default icon CGImage")
+                return ""
+            }
+            let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
+            guard let iconData = bitmapRep.representation(using: .png, properties: [:]) else {
+                print("❌ Failed to encode default icon image")
+                return ""
+            }
+            return iconData.base64EncodedString()
+        }()
+        
         let iconHTML = "<img src='data:image/png;base64,\(iconBase64)' width='256' height='256' />"
 
         let html = """
@@ -126,7 +227,7 @@ class PreviewProvider: QLPreviewProvider, QLPreviewingController {
                 for dataset in group.objectNames() {
                     metadata += "    • \(dataset)\n"
                 }
-                
+
                 metadata += "  Attributes:\n"
                 for attributeName in group.attributeNames() {
                     if let attribute = group.openDoubleAttribute(attributeName) {
