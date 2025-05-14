@@ -2,6 +2,8 @@
 
 # A dotTHz QuickLook Plugin for macOS Finder
 
+<a href="https://github.com/hacknus/DotTHzQL/releases"><img src="icon.png" alt=“” width="100" height="100"> </img> </a>
+
 This is a simple Quicklook plugin for macOS Finder to preview the structure of [dotTHz](https://github.com/dotTHzTAG) files, for imaging scans it also provides a simple render/preview. This works with extensions `.thz`, `.thzimg` and `.thzswp`.
 
 ![screenshot](screenshot.png)
