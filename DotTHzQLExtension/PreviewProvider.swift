@@ -28,7 +28,7 @@ class PreviewProvider: QLPreviewProvider, QLPreviewingController {
         let createdStr = fileCreationDate.map { dateFormatter.string(from: $0) } ?? "Unknown"
         let modifiedStr = fileModificationDate.map { dateFormatter.string(from: $0) } ?? "Unknown"
 
-        let iconBase64: String = {
+        let (iconBase64, previewSize): (String, NSSize) = {
             print("🔍 Attempting to open HDF5 file at: \(fileURL.path)")
             if let file = File.open(fileURL.path, mode: .readOnly) {
                 for groupName in file.getGroupNames() ?? [] {
@@ -50,67 +50,109 @@ class PreviewProvider: QLPreviewProvider, QLPreviewingController {
                                         
                                         var buffer = [Float](repeating: 0, count: Int(elementCount))
                                         
-                                        
                                         try dataset.read(into: &buffer, type: NativeType.float)
                                         
-                                        let width = dims[0]
-                                        let height = dims[1]
+                                        // Get dimensions (assuming standard [height, width, channels] format)
+                                        let height = dims[0]
+                                        let width = dims[1]
                                         let channels = dims[2]
                                         
-                                        var rawPixels = [Float]()
-
-                                        // Use Accelerate for vectorized summing across channels
-                                        print("🧮 Processing image data...")
-
-                                        buffer.withUnsafeBufferPointer { bufPtr in
-                                            let input = bufPtr.baseAddress!
-                                            
-                                            for i in 0..<width {
-                                                for j in 0..<height {
-                                                    let start = (i * height * channels) + (j * channels)
-                                                    var sumSq: Float = 0
-                                                    vDSP_svesq(input.advanced(by: start), 1, &sumSq, vDSP_Length(channels))
-                                                    
-                                                    // Calculate square root of sum of squares for each pixel
-                                                    rawPixels.append(sqrt(sumSq))
+                                        print("📏 Image dimensions: \(width) x \(height) with \(channels) channels")
+                                        
+                                        // Create an array to hold the processed pixel values
+                                        var processedPixels = [Float](repeating: 0, count: Int(width * height))
+                                        
+                                        // Process the buffer data
+                                        for y in 0..<height {
+                                            for x in 0..<width {
+                                                // Calculate position in the buffer
+                                                let bufferIndex = (y * width + x) * channels
+                                                
+                                                // Calculate magnitude across all channels
+                                                var sumSquares: Float = 0
+                                                for c in 0..<channels {
+                                                    let value = buffer[Int(bufferIndex) + Int(c)]
+                                                    sumSquares += value * value
+                                                }
+                                                
+                                                // Store the magnitude
+                                                let pixelIndex = y * width + x
+                                                processedPixels[Int(pixelIndex)] = sqrt(sumSquares)
+                                            }
+                                        }
+                                        
+                                        // Normalize the pixel values
+                                        let maxValue = processedPixels.max() ?? 1.0
+                                        let normalizedPixels = processedPixels.map { min(1.0, $0 / maxValue) }
+                                        
+                                        // Convert to UInt8 (0-255)
+                                        var imageData = [UInt8](repeating: 0, count: Int(width * height))
+                                        for i in 0..<normalizedPixels.count {
+                                            imageData[i] = UInt8(normalizedPixels[i] * 255.0)
+                                        }
+                                        
+                                        // Create the CGImage with the proper alignment
+                                        let bitsPerComponent = 8
+                                        let bitsPerPixel = 8
+                                        
+                                        // Ensure bytesPerRow is correctly aligned (must be a multiple of 4 for Core Graphics)
+                                        let bytesPerRow = ((Int(width) * bitsPerPixel + 31) / 32) * 4
+                                        
+                                        // Create a properly aligned data buffer if needed
+                                        var alignedData: [UInt8]
+                                        if bytesPerRow == width {
+                                            alignedData = imageData
+                                        } else {
+                                            alignedData = [UInt8](repeating: 0, count: Int(height) * bytesPerRow)
+                                            for y in 0..<height {
+                                                for x in 0..<width {
+                                                    let srcIdx = Int(y * width + x)
+                                                    let dstIdx = Int(y) * bytesPerRow + Int(x)
+                                                    alignedData[dstIdx] = imageData[srcIdx]
                                                 }
                                             }
                                         }
-
-                                        // Normalize using max value and convert to UInt8 for image
-                                        let maxVal = rawPixels.max() ?? 1
-                                        var imagePixels = rawPixels.map { UInt8(min(255, ($0 / maxVal) * 255)) }
-
-                                        print("🖼️ Attempting to create CGImage...")
+                                        
                                         let colorSpace = CGColorSpaceCreateDeviceGray()
-                                        let bitsPerComponent = 8
-                                        let bytesPerRow = width
-                                        let dataProvider = CGDataProvider(data: NSData(bytes: &imagePixels, length: imagePixels.count))
-
-                                        if let cgImage = CGImage(
-                                            width: width,
-                                            height: height,
+                                        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue)
+                                        
+                                        guard let provider = CGDataProvider(data: Data(alignedData) as CFData) else {
+                                            print("❌ Failed to create data provider")
+                                            continue
+                                        }
+                                        
+                                        guard let cgImage = CGImage(
+                                            width: Int(width),
+                                            height: Int(height),
                                             bitsPerComponent: bitsPerComponent,
-                                            bitsPerPixel: bitsPerComponent,
+                                            bitsPerPixel: bitsPerPixel,
                                             bytesPerRow: bytesPerRow,
                                             space: colorSpace,
-                                            bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue),
-                                            provider: dataProvider!,
+                                            bitmapInfo: bitmapInfo,
+                                            provider: provider,
                                             decode: nil,
                                             shouldInterpolate: false,
                                             intent: .defaultIntent
-                                        ) {
-                                            let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: 256, height: 256))
-                                            if let tiffData = nsImage.tiffRepresentation,
-                                               let bitmapRep = NSBitmapImageRep(data: tiffData),
-                                               let iconData = bitmapRep.representation(using: .png, properties: [:]) {
-                                                print("✅ Successfully generated image thumbnail")
-                                                return iconData.base64EncodedString()
-                                            } else {
-                                                print("⚠️ Failed to create bitmap representation")
-                                            }
-                                        } else {
+                                        ) else {
                                             print("❌ Failed to create CGImage")
+                                            continue
+                                        }
+                                        
+                                        // Create the properly sized preview image
+                                        let previewWidth: CGFloat = 256.0
+                                        let aspectRatio = CGFloat(height) / CGFloat(width)
+                                        let previewHeight = round(previewWidth * aspectRatio)
+                                        let previewSize = NSSize(width: previewWidth, height: previewHeight)
+                                        
+                                        let nsImage = NSImage(cgImage: cgImage, size: previewSize)
+                                        
+                                        if let tiffData = nsImage.tiffRepresentation,
+                                           let bitmapRep = NSBitmapImageRep(data: tiffData),
+                                           let pngData = bitmapRep.representation(using: .png, properties: [:]) {
+                                            print("✅ Successfully generated image thumbnail")
+                                            return (pngData.base64EncodedString(), previewSize)
+                                        } else {
+                                            print("⚠️ Failed to create PNG representation")
                                         }
                                     } catch {
                                         print("💥 Error processing dataset '\(datasetName)': \(error)")
@@ -125,21 +167,22 @@ class PreviewProvider: QLPreviewProvider, QLPreviewingController {
             }
 
             print("📎 Falling back to default icon.")
+            let defaultSize = NSSize(width: 256, height: 256)
             let icon = NSWorkspace.shared.icon(forFile: fileURL.path)
-            icon.size = NSSize(width: 256, height: 256)
+            icon.size = defaultSize
             guard let cgImage = icon.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
                 print("❌ Failed to get default icon CGImage")
-                return ""
+                return ("", defaultSize)
             }
             let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
             guard let iconData = bitmapRep.representation(using: .png, properties: [:]) else {
                 print("❌ Failed to encode default icon image")
-                return ""
+                return ("", defaultSize)
             }
-            return iconData.base64EncodedString()
+            return (iconData.base64EncodedString(), defaultSize)
         }()
         
-        let iconHTML = "<img src='data:image/png;base64,\(iconBase64)' width='256' height='256' />"
+        let iconHTML = "<img src='data:image/png;base64,\(iconBase64)' width='\(Int(previewSize.width))' height='\(Int(previewSize.height))' />"
 
         let html = """
         <!DOCTYPE html>
@@ -168,6 +211,11 @@ class PreviewProvider: QLPreviewProvider, QLPreviewingController {
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                }
+                .icon img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
                 }
                 .content {
                     flex: 1;
